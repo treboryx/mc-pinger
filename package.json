@@ -1,0 +1,41 @@
+{
+  "name": "mc-pinger",
+  "version": "1.0.0",
+  "description": "Ping Minecraft Servers",
+  "main": "api/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "mc-hermes": "^0.1.5",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/treboryx/mc-pinger.git"
+  },
+  "keywords": [
+    "mc-pinger",
+    "vercel",
+    "mc-ping"
+  ],
+  "author": "treboryx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/treboryx/mc-pinger/issues"
+  },
+  "homepage": "https://github.com/treboryx/mc-pinger#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
+  }
+}
