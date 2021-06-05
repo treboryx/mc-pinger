@@ -19,7 +19,9 @@ export default async function (req, res) {
       .status(200)
       .json({ success: false, error: request.error || "Something went wrong" });
   }
-  const location = await loc(address);
+  const location = await loc(
+    request.srv ? `${request.srv.name}:${request.srv.port}` : address
+  );
   request.loc = location;
   return res.status(200).json({ success: true, data: request });
 }

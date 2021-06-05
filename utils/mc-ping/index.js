@@ -24,7 +24,9 @@ var ping = function (server, port, callback, timeout, protocol) {
   if (typeof protocol !== "number") {
     protocol = 47;
   }
+  let srv;
   dns.resolveSrv("_minecraft._tcp." + server, function (err, record) {
+    if (record) srv = { name: record[0].name, port: record[0].port };
     var connectTo = {
       port: port,
       host: server,
@@ -93,6 +95,7 @@ var ping = function (server, port, callback, timeout, protocol) {
 
       try {
         var json = JSON.parse(buffer.readString());
+        if (srv) json.srv = srv;
 
         // We parsed it, send it along!
         callback(null, json);
