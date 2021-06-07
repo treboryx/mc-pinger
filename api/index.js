@@ -5,7 +5,7 @@ export default async function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Type", "application/json");
 
-  const { address, version } = req.query;
+  const { address, version, location } = req.query;
 
   if (!address || !version)
     return res.status(400).json({
@@ -19,9 +19,13 @@ export default async function (req, res) {
       .status(200)
       .json({ success: false, error: request.error || "Something went wrong" });
   }
-  const location = await loc(
-    request.srv ? `${request.srv.name}:${request.srv.port}` : address
-  );
-  request.loc = location;
+
+  if (location) {
+    const data = await loc(
+      request.srv ? `${request.srv.name}:${request.srv.port}` : address
+    );
+    request.loc = data;
+  }
+
   return res.status(200).json({ success: true, data: request });
 }
