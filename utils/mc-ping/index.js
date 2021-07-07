@@ -26,7 +26,8 @@ var ping = function (server, port, callback, timeout, protocol) {
   }
   let srv;
   dns.resolveSrv("_minecraft._tcp." + server, function (err, record) {
-    if (record) srv = { name: record[0].name, port: record[0].port };
+    if (record && record.length > 0)
+      srv = { name: record[0].name, port: record[0].port };
     var connectTo = {
       port: port,
       host: server,
