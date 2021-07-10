@@ -1,11 +1,12 @@
 import ping from "../utils/ping";
 import loc from "../utils/location";
+import getTxt from "../utils/txt";
 
 export default async function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Type", "application/json");
 
-  const { address, version, location } = req.query;
+  const { address, version, location, txt } = req.query;
 
   if (!address || !version)
     return res.status(400).json({
@@ -25,6 +26,10 @@ export default async function (req, res) {
       request.srv ? `${request.srv.name}:${request.srv.port}` : address
     );
     request.loc = data;
+  }
+  if (txt) {
+    const getTxtRecords = await getTxt(address);
+    request.txt = getTxtRecords;
   }
 
   return res.status(200).json({ success: true, data: request });
