@@ -16,9 +16,16 @@ export default async function (req, res) {
 
   const request = await ping(version.toLowerCase(), address.toLowerCase());
   if (!request || request.error) {
-    return res
-      .status(200)
-      .json({ success: false, error: request.error || "Something went wrong" });
+    if (!txt)
+      return res.status(200).json({
+        success: false,
+        error: request.error || "Something went wrong",
+      });
+  }
+
+  if (txt) {
+    const getTxtRecords = await getTxt(address);
+    request.txt = getTxtRecords;
   }
 
   if (location) {
@@ -26,10 +33,6 @@ export default async function (req, res) {
       request.srv ? `${request.srv.name}:${request.srv.port}` : address
     );
     request.loc = data;
-  }
-  if (txt) {
-    const getTxtRecords = await getTxt(address);
-    request.txt = getTxtRecords;
   }
 
   return res.status(200).json({ success: true, data: request });
