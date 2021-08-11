@@ -56,7 +56,7 @@ export default async (version, address) => {
                 res.description.translate.length > 0
               ) {
                 cleanDescription.push(
-                  res.description.text.replace(/\xA7[0-9A-FK-OR]/gi, "")
+                  res.description.translate.replace(/\xA7[0-9A-FK-OR]/gi, "")
                 );
               } else {
                 cleanDescription.push(
