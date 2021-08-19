@@ -58,18 +58,14 @@ var ping = function (server, port, callback, timeout, protocol) {
       writePCBuffer(socket, setModeBuffer);
     });
 
-    socket.setTimeout(timeout, function () {
-      if (callback) {
-        callback(
-          new Error(
-            "Socket timed out when connecting to " + server + ":" + port
-          ),
-          null
-        );
-      }
+    const timeoutTask = setTimeout(() => {
+      socket.emit("error", new Error("Socket timeout"));
+    }, timeout);
 
+    const closeSocket = () => {
       socket.destroy();
-    });
+      clearTimeout(timeoutTask);
+    };
 
     var readingBuffer = new Buffer.alloc(0);
 
@@ -109,6 +105,7 @@ var ping = function (server, port, callback, timeout, protocol) {
 
       // We're done here.
       socket.destroy();
+      closeSocket();
     });
 
     socket.once("error", function (err) {
@@ -117,6 +114,7 @@ var ping = function (server, port, callback, timeout, protocol) {
       }
 
       socket.destroy();
+      closeSocket();
     });
   });
 };
